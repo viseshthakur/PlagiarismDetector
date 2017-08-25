@@ -57,9 +57,9 @@ class LCS(Exception):
                     l.append(files_txt[i])
                     for j in range(len(files_txt)):
                         if (i==j):
-                                l.append('SameFile')
+                                l.append(0.0)
                         elif i<j:
-                                l.append('Repeat')
+                                l.append(0.0)
                         else:
                                 f1,f2=LCS.FileOperations(files_txt[i],files_txt[j])
                                 l1=LCS.Sequences(f2)
@@ -70,36 +70,19 @@ class LCS(Exception):
                                 for k in l2:
                                         l3.append(len(k))
                                 if len(f1)==0 and len(f2)==0:
-                                        l.append('EmptyFiles')
+                                        l.append(100)
                                 else:
-                                        a=max(l3)
-                                        b=(a*2)/(len1+len2)
-                                        b=b*100
-                                        l.append(int(b))
+                                        if len(l3)==0:
+                                                l.append(100)
+                                        else:
+                                                a=max(l3)
+                                                b=((a*2)/(len1+len2))*100
+                                                l.append(round(b,1))
                     final.append(l)
                 return final
-        def matrixPrinting(final):
-                '''
-                attributes: a list in list is sent as an iput for above function
-    
-                Functioning: It takes the list and prints the matrix format.
-    
-                return: it returns list where every value is formated upto with length
-    
-                '''
-                li=[]
-                for i in range(len(final)):
-                    count=0
-                    for j in range (len(final)):
-                        if count<len(str(final[i][j])):
-                                count=len(str(final[i][j]))
-                    li.append(count)
-                s=("\t".join('{{:{}}}'.format(n) for n in li))
-                z=[s.format(*row) for row in final]
-                return z
 path=input('enter the path')
-files = os.listdir(path)
-files_txt = [i for i in files if i.endswith('.txt')]
+files = os.chdir(path)
+files_txt = [i for i in os.listdir() if i.endswith('.txt')]
 final=[]
 q=[]
 q.append('FileNames')
@@ -107,7 +90,6 @@ for i in files_txt:
     q.append(i)
 final.append(q)
 final=LCS.LCSCalculation(files_txt,final)
-z=LCS.matrixPrinting(final)
-for i in z:
-    print(i)
+print('\n'.join(['   '.join(['{:10}'.format(j) for j in row])  for row in final]))                    
+
               

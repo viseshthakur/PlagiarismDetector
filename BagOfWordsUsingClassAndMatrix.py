@@ -12,7 +12,7 @@ class Bags:
     
     def FilesToStringToDictionary(f1):
         '''
-        Attributes : This function accepts File Name as Input
+        Arguments : This function accepts File Name as Input
 
         Functioning: It converts our files into dictionaries
 
@@ -26,7 +26,7 @@ class Bags:
     
     def DotCal(di,di1):
         '''
-        Attributes:This functions accepts two dictionaries! we doing plagarism so we get two different dictionaries for two files
+        Arguments:This functions accepts two dictionaries! we doing plagarism so we get two different dictionaries for two files
 
         Function: It checks for key in both dictionaries and calculate the dot product by multiplying values of keys
 
@@ -41,12 +41,12 @@ class Bags:
     
     def VectorCal(di):
         '''
-        Attributes : It accepts only one dictionary!
+        Arguments: It accepts only one dictionary!
         
         Function: Calculating vector of of dictionary by using values of it
                      
         return: For every dictionary it returns vector of the dictionary values
-         '''
+        '''
         vect1=0
         for k in di:
             vect1=vect1+(di.get(k)**2)
@@ -55,7 +55,7 @@ class Bags:
     
     def BagsOfWordsListFormat(files_txt,final):
         '''
-        attributes: It accepts all the .txt files stored in list and also the final where we use final variable for printing for matrix
+        Arguments: It accepts all the .txt files stored in list and also the final where we use final variable for printing for matrix
         
         Function: List of files will be iterated and for every two files the plagiarism is checked and again all the functions will be called.
 
@@ -68,12 +68,12 @@ class Bags:
             l.append(files_txt[i])
             for j in range(len(files_txt)):
                 if (i==j):
-                    l.append('Same')
+                    l.append(0)
                 else:
                     s1,len1=Bags.FilesToStringToDictionary(files_txt[i])
                     s2,len2=Bags.FilesToStringToDictionary(files_txt[j])
                     if len1=="" and len2=="":
-                        l.append('EmptyFile')
+                        l.append(100)
                     else:
                         dot=Bags.DotCal(s1,s2)
                         a=Bags.VectorCal(s1)
@@ -82,29 +82,11 @@ class Bags:
                         l.append(c)
             final.append(l)
         return final
-    def matrixPrinting(final):
-        '''
-        attributes: a list in list is sent as an iput for above function
-    
-        Functioning: It takes the list and prints the matrix format.
-    
-        return: it returns list where every value is formated upto with length
-    
-        '''
-        li=[]
-        for i in range(len(final)):
-            count=0
-            for j in range (len(final)):
-                if count<len(str(final[i][j])):
-                        count=len(str(final[i][j]))
-            li.append(count)
-        s=("\t".join('{{:{}}}'.format(n) for n in li))
-        z=[s.format(*row) for row in final]
-        return z
-    
+#You'll enter the Path
 path=input('Enter the Path')
-files = os.listdir(path)
-files_txt = [i for i in files if i.endswith('.txt')]
+files = os.chdir(path)
+list=os.listdir()
+files_txt = [i for i in list if i.endswith('.txt')]
 final=[]
 q=[]
 q.append('FileNames')
@@ -112,9 +94,7 @@ for i in files_txt:
     q.append(i)
 final.append(q)
 final=Bags.BagsOfWordsListFormat(files_txt,final)
-z=Bags.matrixPrinting(final)
-for i in z:
-    print(i)
-                    
+#Matrix Printing
+print('\n'.join(['   '.join(['{:10}'.format(j) for j in row])  for row in final]))                    
                       
                      
